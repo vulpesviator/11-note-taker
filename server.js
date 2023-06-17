@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 
+const uuid = require('./helpers/uuid');
 const { readFromFile, readAndAppend } = require('./helpers/fsUtils');
 
 const PORT = process.env.PORT || 3001;
@@ -35,13 +36,13 @@ app.post("/api/notes", (req, res) => {
         const newNote = {
             title,
             text,
-            note_id,
+            note_id: uuid(),
         };
 
         readAndAppend(newNote, './db/db.json');
         res.json(`Note added successfully`);
     } else {
-        res.error(`There was a problem adding the note`);
+        res.json(`There was a problem adding the note`);
     }
 });
 
