@@ -1,12 +1,13 @@
 const express = require("express");
 const path = require("path");
-const fs = require("fs");
+
+const { readFromFile, readAndAppend } = require('./helpers/fsUtils');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
 
 // Express middleware
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 
@@ -21,8 +22,28 @@ app.get("/notes", (req, res) => {
 });
 
 app.get("/api/notes", (req, res) => {
-    res.sendFile(path.json(__dirname, "../db/db.json"))
-})
+    console.info(`${req.method} request for notes`);
+    readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)));
+});
+
+app.post("/api/notes", (req, res) => {
+    console.info(`${req.method} request received to add note`);
+
+    const { title, text, note_id} = req.body;
+
+    if (req.body) {
+        const newNote = {
+            title,
+            text,
+            note_id,
+        };
+
+        readAndAppend(newNote, './db/db.json');
+        res.json(`Note added successfully`);
+    } else {
+        res.error(`There was a problem adding the note`);
+    }
+});
 
 
 app.listen(PORT, () => {
