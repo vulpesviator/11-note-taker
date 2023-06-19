@@ -1,8 +1,8 @@
 const express = require("express");
 const path = require("path");
+const fs = require('fs');
 
-const uuid = require('./helpers/uuid');
-const { readFromFile, readAndAppend } = require('./helpers/fsUtils');
+const uniqid = require('uniqid')
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -11,8 +11,49 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-
 app.use(express.static("public"));
+
+function getNotes() {
+    const data = fs.readFileSync(path.join(__dirname, "./db/db/json"));
+    return JSON.parse(data);
+}
+
+function saveNote (notes) {
+    fs.writeFileSync(path.join(__dirname, "./db/db.json"), JSON.stringif(notes, null, 4))
+}
+
+app.get("/api/notes", (req, res) => {
+    console.info(`${req.method} request for notes`);
+    const notes = getNotes();
+    res.json(notes);
+});
+
+app.post("/api/notes", (req, res) => {
+    console.info(`${req.method} request received to add note`);
+
+    const { title, text } = req.body;
+
+    if (title && text) {
+        const newNote = {
+            title,
+            text,
+            note_id: uniqid(),
+        };
+
+        const notes = getNotes();
+        notes.push(newNote);
+        saveNote(notes);
+
+        res.json(newNote);
+
+    } else {
+        res.json(`There was a problem adding the note`);
+    }
+});
+
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "./public/index.html"));
+})
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '/public/index.html'))
@@ -20,30 +61,6 @@ app.get('*', (req, res) => {
 
 app.get("/notes", (req, res) => {
     res.sendFile(path.join(__dirname, '/public/notes.html'))
-});
-
-app.get("/api/notes", (req, res) => {
-    console.info(`${req.method} request for notes`);
-    readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)));
-});
-
-app.post("/api/notes", (req, res) => {
-    console.info(`${req.method} request received to add note`);
-
-    const { title, text, note_id} = req.body;
-
-    if (req.body) {
-        const newNote = {
-            title,
-            text,
-            note_id: uuid(),
-        };
-
-        readAndAppend(newNote, './db/db.json');
-        res.json(`Note added successfully`);
-    } else {
-        res.json(`There was a problem adding the note`);
-    }
 });
 
 
