@@ -14,12 +14,12 @@ app.use(express.json());
 app.use(express.static("public"));
 
 function getNotes() {
-    const data = fs.readFileSync(path.join(__dirname, "./db/db/json"));
+    const data = fs.readFileSync(path.join(__dirname, "./db/db.json"));
     return JSON.parse(data);
 }
 
 function saveNote (notes) {
-    fs.writeFileSync(path.join(__dirname, "./db/db.json"), JSON.stringif(notes, null, 4))
+    fs.writeFileSync(path.join(__dirname, "./db/db.json"), JSON.stringify(notes, null, 4))
 }
 
 app.get("/api/notes", (req, res) => {

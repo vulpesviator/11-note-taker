@@ -3,5 +3,10 @@
         "title": "Test Title",
         "text": "Test text"
     },
-    {}
+    {},
+    {
+        "title": "This is a test",
+        "text": "This is a test to see if it posts correctly",
+        "note_id": "sktwi6zmlj346fbr"
+    }
 ]
