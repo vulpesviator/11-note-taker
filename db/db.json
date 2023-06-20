@@ -12,5 +12,10 @@
         "title": "This is another test",
         "text": "Why is this not working like it's supposed to?",
         "note_id": "sktwi3a3lj4ghcww"
+    },
+    {
+        "title": "this is a test ",
+        "text": "because I should be careful when using find/replace too openly\n",
+        "note_id": "sktwi9bnlj4n7s09"
     }
 ]
