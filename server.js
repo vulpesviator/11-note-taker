@@ -42,6 +42,32 @@ app.post("/api/notes", (req, res) => {
     }
 });
 
+app.put("/api/notes/:id", (req, res) => {
+    console.info(`${req.method} note editing request made`);
+
+    const noteId = req.params.id;
+    const { title, text } = req.body;
+
+    if (title && text) {
+        let notes = pullNotes();
+        const updatedNotes = notes.map((note) => {
+            if (note.note_id === noteId) {
+                return {
+                    ...note,
+                    title,
+                    text
+                };
+            }
+            return note;
+        });
+
+        addNote(updatedNotes);
+        res.json("Note updated");
+    } else {
+        res.json("Can't find the note");
+    }
+});
+
 app.delete("/api/notes/:id", (req, res) => {
     console.info(`${req.method} delete note request made`);
 

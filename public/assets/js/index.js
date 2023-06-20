@@ -42,6 +42,15 @@ const saveNote = (note) =>
     body: JSON.stringify(note),
   });
 
+  const updateNote = (id, noteData) =>
+  fetch(`/api/notes/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(noteData),
+  });
+
 const deleteNote = (id) =>
   fetch(`/api/notes/${id}`, {
     method: 'DELETE',
