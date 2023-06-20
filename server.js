@@ -2,7 +2,8 @@ const express = require("express");
 const path = require("path");
 const fs = require('fs');
 
-const uniqid = require('uniqid')
+const uniqid = require('uniqid');
+const { error } = require("console");
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -48,6 +49,21 @@ app.post("/api/notes", (req, res) => {
 
     } else {
         res.json(`There was a problem adding the note`);
+    }
+});
+
+app.delete("/api/notes/:id", (req, res) => {
+    console.info(`${req.method} delete note request made`);
+
+    const noteId = req.params.id;
+    const notes = pullNotes();
+    const updateNotes = notes.filter((note) => notes.note_id !== noteId);
+
+    if (notes.length === updateNotes.length) {
+        res.json(error);
+    } else {
+        addNote(updateNotes);
+        res.json('Note removed')
     }
 });
 
