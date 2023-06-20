@@ -57,15 +57,17 @@ app.delete("/api/notes/:id", (req, res) => {
     }
 });
 
+/* notes.html */
 app.get("/notes", (req, res) => {
     res.sendFile(path.join(__dirname, '/public/notes.html'))
 });
 
+/* index.html */
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '/public/index.html'))
 });
 
-
+/* fucntions for reading/writing notes */
 function pullNotes() {
     const data = fs.readFileSync(path.join(__dirname, "./db/db.json"));
     return JSON.parse(data);
