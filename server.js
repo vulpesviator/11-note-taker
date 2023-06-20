@@ -2,7 +2,8 @@ const express = require("express");
 const path = require("path");
 const fs = require('fs');
 
-const uniqid = require('uniqid')
+const uniqid = require('uniqid');
+const { error } = require("console");
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -13,18 +14,18 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
-function getNotes() {
+function pullNotes() {
     const data = fs.readFileSync(path.join(__dirname, "./db/db.json"));
     return JSON.parse(data);
 }
 
-function saveNote (notes) {
+function addNote (notes) {
     fs.writeFileSync(path.join(__dirname, "./db/db.json"), JSON.stringify(notes, null, 4))
 }
 
 app.get("/api/notes", (req, res) => {
     console.info(`${req.method} request for notes`);
-    const notes = getNotes();
+    const notes = pullNotes();
     res.json(notes);
 });
 
@@ -40,14 +41,29 @@ app.post("/api/notes", (req, res) => {
             note_id: uniqid(),
         };
 
-        const notes = getNotes();
+        const notes = pullNotes();
         notes.push(newNote);
-        saveNote(notes);
+        addNote(notes);
 
         res.json(newNote);
 
     } else {
         res.json(`There was a problem adding the note`);
+    }
+});
+
+app.delete("/api/notes/:id", (req, res) => {
+    console.info(`${req.method} delete note request made`);
+
+    const noteId = req.params.id;
+    const notes = pullNotes();
+    const updateNotes = notes.filter((note) => notes.note_id !== noteId);
+
+    if (notes.length === updateNotes.length) {
+        res.json(error);
+    } else {
+        addNote(updateNotes);
+        res.json('Note removed')
     }
 });
 

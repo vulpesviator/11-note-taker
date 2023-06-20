@@ -3,10 +3,14 @@
         "title": "Test Title",
         "text": "Test text"
     },
-    {},
     {
         "title": "This is a test",
         "text": "This is a test to see if it posts correctly",
         "note_id": "sktwi6zmlj346fbr"
+    },
+    {
+        "title": "This is another test",
+        "text": "Why is this not working like it's supposed to?",
+        "note_id": "sktwi3a3lj4ghcww"
     }
 ]
