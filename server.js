@@ -47,12 +47,12 @@ app.delete("/api/notes/:id", (req, res) => {
 
     const noteId = req.params.id;
     let notes = pullNotes();
-    const updateNotes = notes.filter((note) => notes.note_id !== noteId);
+    const updatedNotes = notes.filter((note) => note.note_id !== noteId);
 
-    if (notes.length === updateNotes.length) {
+    if (notes.length === updatedNotes.length) {
         res.json(error);
     } else {
-        addNote(updateNotes);
+        addNote(updatedNotes);
         res.json('Note removed')
     }
 });
