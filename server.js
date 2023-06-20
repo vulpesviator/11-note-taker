@@ -13,18 +13,18 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
-function getNotes() {
+function pullNotes() {
     const data = fs.readFileSync(path.join(__dirname, "./db/db.json"));
     return JSON.parse(data);
 }
 
-function saveNote (notes) {
+function addNote (notes) {
     fs.writeFileSync(path.join(__dirname, "./db/db.json"), JSON.stringify(notes, null, 4))
 }
 
 app.get("/api/notes", (req, res) => {
     console.info(`${req.method} request for notes`);
-    const notes = getNotes();
+    const notes = pullNotes();
     res.json(notes);
 });
 
@@ -40,9 +40,9 @@ app.post("/api/notes", (req, res) => {
             note_id: uniqid(),
         };
 
-        const notes = getNotes();
+        const notes = pullNotes();
         notes.push(newNote);
-        saveNote(notes);
+        addNote(notes);
 
         res.json(newNote);
 
