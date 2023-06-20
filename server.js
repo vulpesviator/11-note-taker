@@ -50,7 +50,7 @@ app.delete("/api/notes/:id", (req, res) => {
     const updatedNotes = notes.filter((note) => note.note_id !== noteId);
 
     if (notes.length === updatedNotes.length) {
-        res.json(error);
+        res.json("Note not found");
     } else {
         addNote(updatedNotes);
         res.json('Note removed')
