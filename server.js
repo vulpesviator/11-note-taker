@@ -28,7 +28,7 @@ app.post("/api/notes", (req, res) => {
         const newNote = {
             title,
             text,
-            note_id: uniqid(),
+            id: uniqid(),
         };
 
         const notes = pullNotes();
@@ -51,7 +51,7 @@ app.put("/api/notes/:id", (req, res) => {
     if (title && text) {
         let notes = pullNotes();
         const updatedNotes = notes.map((note) => {
-            if (note.note_id === noteId) {
+            if (note.id === noteId) {
                 return {
                     ...note,
                     title,
@@ -73,7 +73,7 @@ app.delete("/api/notes/:id", (req, res) => {
 
     const noteId = req.params.id;
     let notes = pullNotes();
-    const updatedNotes = notes.filter((note) => note.note_id !== noteId);
+    const updatedNotes = notes.filter((note) => note.id !== noteId);
 
     if (notes.length === updatedNotes.length) {
         res.json("Note not found");
