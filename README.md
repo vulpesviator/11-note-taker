@@ -20,12 +20,9 @@ To run this application locally, clone or download the repo which contains the n
 
 ## Usage
 
+The site is currently deployed for review on [heroku](https://ancient-anchorage-28546-b08d54482611.herokuapp.com/)
 
-  The site is currently deployed for review on [heroku](https://ancient-anchorage-28546-b08d54482611.herokuapp.com/)
-
-  
-
-![Note Taker app](//)
+![Note Taker app](https://github.com/vulpesviator/11-note-taker/assets/123843930/c3c4fb35-671f-4a19-94cd-7f2a3d44b6fb)
 
 1. You can navigate to where this app is deployed, or deploy it locally on your system.
 2. When a user clicks on the link to the notes page, the user will be presented with any existing notes stored in their `db.json` file in the left-hand column and an empty note field in the right-hand column.
